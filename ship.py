@@ -37,3 +37,6 @@ class Ship(object):
 		# 根据self.center 更新rect的对象
 		self.rect.centerx = self.center
 			
+	
+	def center_ship(self):
+		self.center = self.screen_rect.centerx

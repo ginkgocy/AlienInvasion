@@ -6,19 +6,20 @@
 
 import sys
 import pygame
+import game_functions as gf
 
 from alien_invasion_setting import Settings
 from ship import Ship
-
+from game_stats import GameStats
 from pygame.sprite import Group
 
-import game_functions as gf
 
 def run_game():
 	pygame.init()
 	ai_settings = Settings()
 	screen = pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
 	pygame.display.set_caption("Alien Invasion")
+	stats = GameStats(ai_settings)
 	
 	ship = Ship(ai_settings,screen)
 	
@@ -28,13 +29,20 @@ def run_game():
 	# 创建用于存储外星人的编组
 	aliens = Group()
 	
-	gf.create_fleet(ai_settings,screen,aliens)
+	gf.create_fleet(ai_settings,screen,ship,aliens)
 	
 	while True:
-		gf.check_events(ai_settings,screen,ship,bullets)	#事件监测
-		ship.update()										#飞船属性更新
-		gf.update_bullets(bullets)							#更新子弹的位置信息
-		screen.fill(ai_settings.bg_color)					#设置窗口背景颜色
-		gf.update_screen(ai_settings, screen, ship,aliens,bullets) #更新屏幕上绘制的内容
+		# 事件监测
+		gf.check_events(ai_settings,screen,ship,bullets)
+		# 飞船属性更新	
+		ship.update()	
+		# 更新子弹的位置信息									
+		gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
+		# 更新外星人的位置							
+		gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)	
+		# 设置窗口背景颜色			
+		screen.fill(ai_settings.bg_color)	
+		# 更新屏幕上绘制的内容				
+		gf.update_screen(ai_settings, screen, ship,aliens,bullets) 
 		
 run_game()
