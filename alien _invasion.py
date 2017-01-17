@@ -34,12 +34,15 @@ def run_game():
 	while True:
 		# 事件监测
 		gf.check_events(ai_settings,screen,ship,bullets)
-		# 飞船属性更新	
-		ship.update()	
-		# 更新子弹的位置信息									
-		gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
-		# 更新外星人的位置							
-		gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)	
+		if stats.game_active:
+			# 飞船属性更新	
+			ship.update()	
+			# 更新子弹的位置信息									
+			gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
+			# 更新外星人的位置							
+			gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)	
+
+			
 		# 设置窗口背景颜色			
 		screen.fill(ai_settings.bg_color)	
 		# 更新屏幕上绘制的内容				
